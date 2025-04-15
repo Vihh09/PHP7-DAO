@@ -20,7 +20,7 @@ class Sql extends PDO {
 
         foreach ($parameters as $key => $value) { //for para arrays, no caso o array params
 
-            $this->setParam($key, $value); //associa os indices do array (chaves) com os valores
+            $this->setParam($statment, $key, $value); //associa os indices do array (chaves) com os valores
 
         }
     }
