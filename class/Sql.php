@@ -2,48 +2,51 @@
 
 class Sql extends PDO {
 
-    private $conn; //só pode ser usado dentro da classe
+    private $conn;
 
-    public function __construct() { //metodo que vai ser rodado assim que a função for chamada
+    public function __construct() {
 
-        $this->conn = new PDO("mysql:host=localhost;dbname=mota", "root", "Desenv#6");//conexão com o banco
-    }
-
-
-    private function setParam($statment, $key, $value) {
-
-        $statment->bindParam($key, $value);
+        $this->conn = new PDO("mysql:host=localhost;dbname=mota", "root", "Desenv#6");
 
     }
 
-    private function setParams($statment, $parameters = array()) { //funcao para modificar valores
+    private function setParams($statement, $parameters = array()) {
 
-        foreach ($parameters as $key => $value) { //for para arrays, no caso o array params
+        foreach ($parameters as $key => $value) {
 
-            $this->setParam($statment, $key, $value); //associa os indices do array (chaves) com os valores
+            $this->setParam($statement, $key, $value);
 
         }
+
     }
 
+    private function setParam($statement, $key, $value){
 
-    //$rawQuery = código puro do SQL informado
-    //params = array com os dados do banco
+        $statement->bindParam($key, $value);
+
+    }
+
     public function runquery($rawQuery, $params = array()) {
 
-        $stmt = $this->conn->prepare($rawQuery); //executa o comando SQL
+        $stmt = $this->conn->prepare($rawQuery);
 
         $this->setParams($stmt, $params);
 
         $stmt->execute();
 
         return $stmt;
+
     }
 
-    public function select($rawQuery, $params = array()):array{ //funcao para mostrar dados
+    public function select($rawQuery, $params = array()):array
+    {
 
         $stmt = $this->runquery($rawQuery, $params);
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     }
 
 }
+
+?>
